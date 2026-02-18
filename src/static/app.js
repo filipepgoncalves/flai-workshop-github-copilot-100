@@ -4,6 +4,24 @@ document.addEventListener("DOMContentLoaded", () => {
   const signupForm = document.getElementById("signup-form");
   const messageDiv = document.getElementById("message");
 
+  // Unregister a participant from an activity and refresh the list
+  async function unregisterParticipant(activityName, email) {
+    try {
+      const response = await fetch(
+        `/activities/${encodeURIComponent(activityName)}/unregister?email=${encodeURIComponent(email)}`,
+        { method: "DELETE" }
+      );
+      if (response.ok) {
+        await fetchActivities();
+      } else {
+        const result = await response.json();
+        alert(result.detail || "Failed to unregister participant.");
+      }
+    } catch (error) {
+      console.error("Error unregistering participant:", error);
+    }
+  }
+
   // Function to fetch activities from API
   async function fetchActivities() {
     try {
@@ -12,6 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Clear loading message
       activitiesList.innerHTML = "";
+      activitySelect.innerHTML = '<option value="">-- Select an activity --</option>';
 
       // Populate activities list
       Object.entries(activities).forEach(([name, details]) => {
@@ -21,7 +40,9 @@ document.addEventListener("DOMContentLoaded", () => {
         const spotsLeft = details.max_participants - details.participants.length;
 
         const participantItems = details.participants.length
-          ? details.participants.map(p => `<li>${p}</li>`).join("")
+          ? details.participants.map(p =>
+              `<li><span class="participant-email">${p}</span><button class="delete-participant" title="Unregister ${p}" data-activity="${name}" data-email="${p}">&times;</button></li>`
+            ).join("")
           : "<li class='no-participants'>No participants yet — be the first!</li>";
 
         activityCard.innerHTML = `
@@ -34,6 +55,13 @@ document.addEventListener("DOMContentLoaded", () => {
             <ul class="participants-list">${participantItems}</ul>
           </div>
         `;
+
+        // Attach delete handlers
+        activityCard.querySelectorAll(".delete-participant").forEach(btn => {
+          btn.addEventListener("click", () => {
+            unregisterParticipant(btn.dataset.activity, btn.dataset.email);
+          });
+        });
 
         activitiesList.appendChild(activityCard);
 
