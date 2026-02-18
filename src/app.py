@@ -22,6 +22,42 @@ app.mount("/static", StaticFiles(directory=os.path.join(Path(__file__).parent,
 # In-memory activity database
 activities = {
     "Chess Club": {
+        "Tennis Club": {
+            "description": "Practice tennis skills and participate in friendly matches",
+            "schedule": "Thursdays, 4:00 PM - 5:30 PM",
+            "max_participants": 10,
+            "participants": ["sophia@mergington.edu", "liam@mergington.edu"]
+        },
+        "Swim Team": {
+            "description": "Train and compete in swimming events",
+            "schedule": "Mondays and Wednesdays, 3:30 PM - 5:00 PM",
+            "max_participants": 15,
+            "participants": ["oliver@mergington.edu", "mia@mergington.edu"]
+        },
+        "Photography Club": {
+            "description": "Learn photography techniques and showcase your work",
+            "schedule": "Fridays, 4:00 PM - 5:30 PM",
+            "max_participants": 12,
+            "participants": ["lucas@mergington.edu", "ava@mergington.edu"]
+        },
+        "Music Ensemble": {
+            "description": "Play instruments and perform in school concerts",
+            "schedule": "Tuesdays, 5:00 PM - 6:30 PM",
+            "max_participants": 18,
+            "participants": ["isabella@mergington.edu", "benjamin@mergington.edu"]
+        },
+        "Debate Club": {
+            "description": "Develop public speaking and argumentation skills",
+            "schedule": "Wednesdays, 4:00 PM - 5:30 PM",
+            "max_participants": 14,
+            "participants": ["charlotte@mergington.edu", "noah@mergington.edu"]
+        },
+        "Book Club": {
+            "description": "Read and discuss books from various genres",
+            "schedule": "Thursdays, 3:30 PM - 4:30 PM",
+            "max_participants": 16,
+            "participants": ["emma@mergington.edu", "elijah@mergington.edu"]
+        },
         "description": "Learn strategies and compete in chess tournaments",
         "schedule": "Fridays, 3:30 PM - 5:00 PM",
         "max_participants": 12,
@@ -105,6 +141,9 @@ def signup_for_activity(activity_name: str, email: str):
     # Add student
     activity["participants"].append(email)
     return {"message": f"Signed up {email} for {activity_name}"}
+
+  
+
 
    
 
